@@ -8,6 +8,10 @@ const userSchema = mongoose.Schema({
     registeron: Date,
     email: String,
     password: String,
+    followers: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }],
 });
 
 const User = mongoose.model('User', userSchema);

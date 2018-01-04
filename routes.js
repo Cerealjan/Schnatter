@@ -16,7 +16,7 @@ module.exports = [
 
   { method: 'GET', path: '/home', config: Schnatts.home },
   { method: 'GET', path: '/report', config: Schnatts.report },
-  { method: 'POST', path: '/message', config: Schnatts.message },
+  { method: 'POST', path: '/message', config: Schnatts.createschnatt },
   { method: 'GET', path: '/mytimeline', config: Schnatts.myTimeline },
   { method: 'POST', path: '/mytimeline/{id}', config: Schnatts.deleteSchnatts },
   { method: 'GET', path: '/timeline/{id}', config: Schnatts.timeline },

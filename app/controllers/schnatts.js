@@ -17,9 +17,10 @@ exports.report = {
   {
     Message.find({}).populate('user').then(allMessages =>
     {
+      let sortedMessages = allMessages.sort(datesort);
       reply.view('report', {
         title: 'Alle heutigen Schwätzer',
-        schnatts: allMessages,
+        schnatts: sortedMessages,
       });
     }).catch(err =>
     {
@@ -29,14 +30,15 @@ exports.report = {
 
 };
 
-exports.message = {
+exports.createschnatt = {
 
   handler: function (request, reply)
   {
     User.findOne({ email: request.auth.credentials.loggedInUser }).then(self =>
     {
       let data = request.payload;
-      data.user = self
+      data.user = self;
+      data.date = new Date();
       const message = new Message(data);
 
       message.save().then(newMessage =>
@@ -61,9 +63,10 @@ exports.myTimeline = {
     {
       Message.find({ user: self }).then(allMessages =>
       {
+        let sortedMessages = allMessages.sort(datesort);
         reply.view('mytimeline', {
           title: "Alle Schnatts von mir",
-          schnatts: allMessages,
+          schnatts: sortedMessages,
 
 
         });
@@ -100,9 +103,10 @@ exports.timeline = {
       console.log(theOne);
       Message.find({ user: theOne }).populate('user').then(allMessages =>
       {
+        let sortedMessages = allMessages.sort(datesort);
         reply.view('timeline', {
           title: "Alle Schnatts von ihm",
-          schnatts: allMessages,
+          schnatts: sortedMessages,
           username: theOne.firstName,
 
         });
@@ -112,4 +116,11 @@ exports.timeline = {
       });
     });
   }
+};
+
+function datesort(o1, o2)
+{
+  if (o1.date - o2.date > 0) return -1;
+  else if (o2.date - o1.date > 0) return 1;
+  else return 0;
 };
